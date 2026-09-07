@@ -133,6 +133,15 @@ Use the workflows below only when repository-specific instructions do not define
 
 First decide which schema workflow the project uses.
 
+### Hosted development branch workflow
+
+Use this when repository instructions or Supabase branch configuration establish a hosted development branch as the working database environment. Supabase supports both local and remote branch development workflows; see [Working with branches](https://supabase.com/docs/guides/deployment/branching/working-with-branches).
+
+1. **Verify the non-production target before writes.** Resolve the selected project/branch through the repository-authorized path. If Production cannot be ruled out, stop before mutation unless the user explicitly authorizes a Production operation.
+2. **Keep hosted iteration on the hosted branch.** Use the repository-authorized project-scoped tools and do not start a local Supabase/Docker stack as an implicit fallback. When the repository workflow uses MCP, use `execute_sql` for iteration and `apply_migration` for the finalized migration only within that approved non-production path.
+3. **Verify online.** Run targeted test queries and relevant security/performance advisors against the same hosted branch after the change.
+4. **Reconcile migration history.** Before declaring completion, make sure the committed migration artifact/version corresponds to the migration history recorded on the hosted branch. If branch configuration or authorized access is broken, repair or report that boundary rather than switching to Production or another target.
+
 ### Option A: Declarative schemas
 
 Use this when `supabase/schemas/` exists or `config.toml` sets `schema_paths`. Edit the desired schema state in those files, then generate and review the migration. Do not start by hand-writing a migration. See the [Declarative database schemas guide](https://supabase.com/docs/guides/local-development/declarative-database-schemas).
