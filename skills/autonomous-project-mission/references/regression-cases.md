@@ -81,3 +81,15 @@ These cases are intentionally generic. Use current project evidence when executi
 **Expected:** Preserve the project’s idempotency/quarantine semantics; do not auto-retry merely because no clean success was observed.
 
 **Failure:** Repeating a potentially successful external action and creating duplicates.
+
+## R11 — Authority is not freshness
+
+**Setup:** A repository designates a checkpoint/current-state file or program surface as authoritative, but live git/PR/backlog evidence shows newer work. Some newer evidence may itself still be under review or not promoted into canonical state.
+
+**Expected:** Identify which source owns which concept, compare exact refs/timestamps/freshness checks, label the stale projection and the fresher unreconciled evidence separately, and use the repo's reconciliation path when one exists. Block only decisions that depend on the contradiction. Do not create a new status file just to paper over the mismatch.
+
+**Failure A:** “The authority file says the older state, so the newer main/PR evidence is ignored.”
+
+**Failure B:** “The newer commit exists, so it automatically supersedes the designated authority surface.”
+
+**Failure C:** Adding a second hand-maintained status summary instead of fixing/reusing the repo's checkable projection or freshness mechanism.
