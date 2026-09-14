@@ -21,34 +21,34 @@ authority_order:
   - <other evidence source>
 
 current_gate:
-  state: <OPEN/READY/BLOCKED/OPERATOR_ONLY/...>
+  state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
   controlled_by: <authority reference>
   meaning: <what it permits and what it does not>
 
 action_envelope:
   READ_ANALYZE:
-    state: ALLOWED
-    evidence: <why>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
+    evidence: <why - an unfilled state means NOT_EVALUATED, which authorizes nothing>
   BUILD_LOCAL:
-    state: <...>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
     evidence: <...>
   TEST_VERIFY:
-    state: <...>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
     evidence: <...>
   CREATE_BRANCH:
-    state: <...>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
     evidence: <...>
   PUSH:
-    state: <...>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
     evidence: <...>
   OPEN_PR:
-    state: <...>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
     evidence: <...>
   PROMOTE_MERGE:
-    state: <...>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
     evidence: <...>
   DEPLOY_EXTERNAL_WRITE:
-    state: <...>
+    state: <ALLOWED/BLOCKED/OPERATOR_ONLY/NOT_EVALUATED>
     evidence: <...>
 
 proof_required:

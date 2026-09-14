@@ -21,5 +21,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run sanity tests
-        run: pnpm test:sanity
+      - name: Run tests
+        # AGENTS.md names `pnpm test` as the pre-completion gate. Running the
+        # `test:sanity` subset here meant CI green did not mean the gate passed;
+        # it names one file, so any new test file was invisible to CI.
+        run: pnpm test

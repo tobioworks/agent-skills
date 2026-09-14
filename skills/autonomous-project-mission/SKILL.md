@@ -1,6 +1,9 @@
 ---
 name: autonomous-project-mission
 description: "Derive and run evidence-grounded autonomous LLM engineering missions from live project and GitHub state without overriding repository authority. Use when asked to give Claude Code, Codex, ChatGPT, or another coding agent a main mission/system prompt; let an agent own a goal across an open project; inspect current repos/issues/PRs/gates before acting; decide what the agent may research, build, test, push, PR, merge, deploy, or escalate; dogfood agent autonomy across projects; or turn repeated agent failures into a reusable bounded operating loop."
+metadata:
+  author: tobioworks
+  version: "0.0.0"
 ---
 
 # Autonomous Project Mission
@@ -9,7 +12,7 @@ Use this skill as an **orchestration layer**, never as a new source of project t
 
 ## Core rule
 
-Read the target project's current authority before writing anything. Repository-local operating contracts, accepted decisions, canonical program issues, current git state, and explicit operator gates outrank this skill. If the skill and project disagree, the project wins unless the user explicitly and validly changes that project authority.
+Read the target project's current authority before writing anything. Repository-local operating contracts, accepted decisions, canonical program issues, current git state, and explicit operator gates outrank this skill. If the skill and project disagree, the project wins. A chat instruction does not change project authority — authority changes only when the project's own authority files change. If the user asks for something the project forbids, surface the conflict and name the file that would have to change; do not adjudicate it yourself.
 
 Do not infer approval from tool capability, a broad request to “continue,” or the existence of a branch. **Capability to mutate is not authority to mutate.**
 
@@ -47,6 +50,8 @@ Keep **authority** and **freshness** separate. A named authority surface can be 
 
    Set each to `ALLOWED`, `BLOCKED`, `OPERATOR_ONLY`, or `NOT_EVALUATED`, with the authority/evidence that controls it. A blocked later action must not stop earlier allowed work.
 
+   **Default is closed. Only `ALLOWED` permits an action.** `NOT_EVALUATED` is a refusal, not a maybe: an action stays unperformed until evidence is recorded that promotes it to `ALLOWED`. An envelope you did not finish filling in authorizes nothing.
+
 5. **Create a thin project overlay.** Use `references/project-overlay.md`.
    - Cite dynamic state instead of copying large mutable backlogs into the prompt.
    - Carry a `checked_at` value or exact ref when available.
@@ -55,12 +60,12 @@ Keep **authority** and **freshness** separate. A named authority surface can be 
 
 6. **Render the mission contract.** Use `references/main-mission.md` as the canonical LLM prompt.
    - Give the agent a goal, constraints, proofs, escalation boundaries, and output contract.
-   - Tell it to continue through recoverable engineering failures and around blocked branches.
+   - Tell it to continue through recoverable engineering failures and around blocked branches. **Recoverable means the cause is identified and the fix lies entirely inside an `ALLOWED` lane.** Budget: at most 3 attempts on one root cause, or 2 consecutive attempts producing no new diagnostic information — then stop that lane and report what was learned.
    - Make `NO PR` / `NO BUILD` valid outcomes when evidence does not justify a mutation.
 
 7. **Execute only authorized lanes.**
    - Resolve normal compiler/test/refactor/search failures autonomously.
-   - Stop only the dependent branch when a business, authority, security/privacy, irreversible-action, or external-contract decision is genuinely unresolved.
+   - Stop only the dependent branch when a business, authority, security/privacy, irreversible-action, or external-contract decision is unresolved. **Unresolved means: proceeding would require an action not marked `ALLOWED`, or would produce an irreversible or externally-visible effect.** Difficulty, tedium and repeated failure are not gates.
    - Continue all independent work.
 
 8. **Verify claims at the right proof level.** Keep these distinct unless project-specific authority defines a stricter ladder:

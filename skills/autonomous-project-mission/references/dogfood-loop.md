@@ -67,7 +67,7 @@ exact_input_ref:
 authority_sources:
 freshness_conflicts:
 expected_action_envelope:
-musk_disposition:
+subtraction_disposition:
   question:
   delete_or_reuse:
   simplify:
