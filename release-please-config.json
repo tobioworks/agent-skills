@@ -43,14 +43,7 @@
       "release-type": "simple",
       "component": "autonomous-project-mission",
       "skip-github-release": true,
-      "changelog-path": "CHANGELOG.md",
-      "extra-files": [
-        {
-          "type": "generic",
-          "path": "skills/autonomous-project-mission/SKILL.md",
-          "expressions": ["version: \"([0-9]+\\.[0-9]+\\.[0-9]+)\""]
-        }
-      ]
+      "changelog-path": "CHANGELOG.md"
     }
   }
 }
