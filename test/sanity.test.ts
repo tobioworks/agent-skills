@@ -12,6 +12,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 const SKILLS_DIR = join(__dirname, "..", "skills");
 const PUBLIC_SKILL_NAMES = [
+	"autonomous-project-mission",
 	"supabase",
 	"supabase-postgres-best-practices",
 ] as const;
@@ -57,7 +58,7 @@ function runSkillsAdd(sourceDir: string, skillName?: string): InstallResult {
 				cwd: installDir,
 				encoding: "utf-8",
 				stdio: ["pipe", "pipe", "pipe"],
-				timeout: 120000, // 2 minute timeout
+				timeout: 120000,
 			},
 		);
 		commandExitCode = 0;
@@ -105,7 +106,7 @@ describe("skills add sanity check", () => {
 		}
 	});
 
-	it("should discover exactly the two public skills", () => {
+	it("should discover all public skills", () => {
 		expect(skillNames).toEqual([...PUBLIC_SKILL_NAMES]);
 		console.log(
 			`Discovered ${skillNames.length} skills: ${skillNames.join(", ")}`,
@@ -123,7 +124,7 @@ describe("skills add sanity check", () => {
 		expect(installAllResult.commandExitCode).toBe(0);
 	});
 
-	it("should install exactly the two public skills when installing all", () => {
+	it("should install exactly the public skills when installing all", () => {
 		expect(installAllResult.installedSkillNames).toEqual([...PUBLIC_SKILL_NAMES]);
 	});
 

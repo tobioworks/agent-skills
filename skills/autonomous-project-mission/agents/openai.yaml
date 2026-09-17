@@ -1,0 +1,3 @@
+interface:
+  display_name: "Autonomous Project Mission"
+  short_description: "Compile live project authority into bounded autonomous agent missions"
