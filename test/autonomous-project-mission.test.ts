@@ -91,6 +91,53 @@ describe("R-BUDGET — autonomy is bounded by an attempt budget", () => {
 	});
 });
 
+/**
+ * The envelope denies by default (above), and this fixes what may open it.
+ *
+ * Without a promotion rule, `INFERRED` — "reasoned from evidence" — is enough to
+ * set an action ALLOWED, so the agent can reason its way to authorizing itself.
+ * Measured self-assessment in language models is the weakest available signal:
+ * verbalized confidence clusters overconfidently, and trivial external
+ * classifiers match or beat it. So confidence is not an input to the envelope.
+ */
+describe("R-PROMOTION — only external evidence opens an action", () => {
+	it("SKILL.md states that only VERIFIED promotes", () => {
+		expect(read("SKILL.md")).toMatch(
+			/Only `VERIFIED` evidence promotes an action/i,
+		);
+	});
+
+	it("the canonical prompt carries the promotion rule", () => {
+		const mission = read("references", "main-mission.md");
+		expect(mission).toMatch(/\*\*Promotion rule\.\*\*/);
+		expect(mission).toMatch(/Only `VERIFIED` promotes an action to `ALLOWED`/i);
+	});
+
+	/**
+	 * Asserted per-file with literals, not one loose alternation. The first
+	 * version used /`INFERRED`[^.]*never (promotes|an authorization)/ across both
+	 * files; because `[^.]*` spans clauses, flipping "never promotes" to "may
+	 * promote" still matched the later "never an authorization" in the same
+	 * sentence. The mutant survived. Match the exact clause each file carries.
+	 */
+	it("INFERRED is barred from promoting, in the prompt", () => {
+		expect(read("references", "main-mission.md")).toContain(
+			"`INFERRED` never promotes",
+		);
+	});
+
+	it("INFERRED is barred from promoting, in SKILL.md", () => {
+		expect(read("SKILL.md")).toContain("never an authorization");
+	});
+
+	it("self-assessed confidence is excluded as an envelope input", () => {
+		const mission = read("references", "main-mission.md");
+		expect(mission).toMatch(/Do not weigh your own confidence/i);
+		// Capability was already barred; confidence must be barred alongside it.
+		expect(mission).toMatch(/Capability is not permission; neither is confidence/i);
+	});
+});
+
 describe("R6 — no private naming leaks into the shipped skill", () => {
 	it("contains no author-private disposition key", () => {
 		for (const file of [

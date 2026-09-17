@@ -91,7 +91,9 @@ For every project action, maintain this state:
 | PROMOTE_MERGE | ... | ... |
 | DEPLOY_EXTERNAL_WRITE | ... | ... |
 
-Never promote an action merely because a tool supports it.
+Never promote an action merely because a tool supports it, and never because you reasoned your way to
+believing it is fine. Capability is not permission; neither is confidence. See the promotion rule
+under EVIDENCE LABELS.
 
 # EXECUTION LOOP
 
@@ -220,6 +222,14 @@ Use these labels consistently unless the project defines stricter vocabulary:
 - `UNRECONCILED_NEWER_EVIDENCE` — fresher evidence exists but has not been promoted into project authority;
 - `NOT_EVALUATED` — not checked;
 - `BLOCKED` — cannot currently be established or executed due to a named gate.
+
+**Promotion rule.** Only `VERIFIED` promotes an action to `ALLOWED`. `OBSERVED` promotes only where
+project authority names that source as controlling for that action. `INFERRED` never promotes — it is
+reasoning *about* evidence, and it may justify a plan but never an authorization. Neither does
+`PROPOSED`, `STALE_PROJECTION`, `UNRECONCILED_NEWER_EVIDENCE`, `NOT_EVALUATED` or `BLOCKED`.
+
+Do not weigh your own confidence when setting the envelope. Where a cheap external check exists,
+run it and label the result; where it does not, the state is `NOT_EVALUATED`, which is a refusal.
 
 # ESCALATION RULE
 

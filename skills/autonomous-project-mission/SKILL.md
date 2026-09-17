@@ -52,6 +52,8 @@ Keep **authority** and **freshness** separate. A named authority surface can be 
 
    **Default is closed. Only `ALLOWED` permits an action.** `NOT_EVALUATED` is a refusal, not a maybe: an action stays unperformed until evidence is recorded that promotes it to `ALLOWED`. An envelope you did not finish filling in authorizes nothing.
 
+   **Only `VERIFIED` evidence promotes an action.** `INFERRED` is your reasoning *about* evidence, not evidence — it may justify a plan, never an authorization. `OBSERVED` promotes only where project authority names that source as controlling for that action. `PROPOSED`, `STALE_PROJECTION`, `UNRECONCILED_NEWER_EVIDENCE`, `NOT_EVALUATED` and `BLOCKED` never promote. Your own sense of how sure you are is not an input to the envelope: measured self-assessment in language models is systematically overconfident, and trivial external classifiers match or beat it.
+
 5. **Create a thin project overlay.** Use `references/project-overlay.md`.
    - Cite dynamic state instead of copying large mutable backlogs into the prompt.
    - Carry a `checked_at` value or exact ref when available.
